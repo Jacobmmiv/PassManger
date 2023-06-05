@@ -1,0 +1,76 @@
+
+import random 
+import string
+
+def generate_password(length=8, include_digits=True, include_special_chars=True):
+    characters = string.ascii_letters
+    if include_digits:
+        characters += string.digits
+    if include_special_chars:
+        characters +=string.punctuation
+
+    password = ''.join(random.choice(characters) for _ in range(length))
+    return password
+
+
+
+def save_password(password):
+    with open("passwords.txt","a") as file:
+        file.write(password + "\n")
+    print("Saved Password")
+
+def view_passwords():
+    try:
+        with open("passwords.txt", "r") as file:
+            passwords = file.readlines()
+        if passwords:
+            print("Saved Passwords:")
+            for password in passwords:
+                print(password.strip())
+        else:
+            print("No passwords found.")
+    except FileNotFoundError:
+        print("No passwords found.")
+
+
+def main():
+
+   print("\nWelcome to PassManager")
+
+   while True:
+        print("\n1. Create New Password")
+        print("2. View Passwords")
+        print("3. Exit")
+        choice = input("Enter your choice (1-2): ")
+  
+  
+  
+  
+        if choice == "1":
+            length = int(input("Enter the desired password length: "))
+            include_digits = input("Include digits? (y/n): ").lower() == "y"
+            include_special_chars = input("Include special characters? (y/n): ").lower() == "y"
+
+            password = generate_password(length, include_digits, include_special_chars)
+            print("Generated Password:", password)
+
+            save_choice = input("Do you want to save this password? (y/n): ")
+            if save_choice.lower() == "y":
+                pass_use = input("what is the password used for? ")
+                save_password(pass_use + password)
+        
+        elif choice == "2":
+            view_passwords()
+            
+        
+        elif choice == "3":
+            print("Thank you for using PassManager. Goodbye!")
+            
+            break
+
+
+
+
+
+if __name__ == "__main__":
+    main()
